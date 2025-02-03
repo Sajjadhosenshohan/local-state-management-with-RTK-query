@@ -4,5 +4,12 @@ export type TTask = {
   description: string;
   dueDate: string;
   isCompleted: boolean;
-  priority: "High" | "Medium" | "Low";
+  priority: "all"| "high" | "medium" | "low";
+  assignTo: string | null;
 };
+
+export type TUser = {
+  id: string;
+  name: string;
+  isDeleted: boolean
+}

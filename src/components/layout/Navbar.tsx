@@ -15,7 +15,7 @@ const Navbar = () => {
       <div className="flex items-center gap-5">
         
           <Link to={"/"}>Tasks</Link>
-          <Link to={"/users"}>Users</Link>
+          <Link to={"/user"}>Users</Link>
         
       </div>
 
