@@ -1,6 +1,7 @@
 import { RootState } from "@/Redux/store";
 import { TTask } from "@/types";
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
+import { removeUser } from "../user/user";
 type TInitialState = {
   tasks: TTask[];
   filter: "all" | "high" | "medium" | "low";
@@ -73,6 +74,12 @@ const taskSlice = createSlice({
       state.filter = action.payload;
     }
   },
+  extraReducers: (builder) =>{
+    builder.addCase(removeUser, (state,action) =>{
+
+      state.tasks.forEach((task)=> task.assignTo === action.payload ? (task.assignTo = null) : task)
+    })
+  }
 });
 
 export const selectTasks = (state: RootState) => {

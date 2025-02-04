@@ -2,15 +2,31 @@
 import { AddTask } from "@/components/module/AddTask";
 import TaskCard from "@/components/module/TaskCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { filterTask, selectFilters, selectTasks } from "@/Redux/features/task/taskSlice";
-import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
+import { useGetTasksQuery } from "@/Redux/api/baseApi";
+import { filterTask} from "@/Redux/features/task/taskSlice";
+import { useAppDispatch,  } from "@/Redux/hooks";
 import { TTask } from "@/types";
 
 const Task = () => {
-  const tasks = useAppSelector(selectTasks);
-  const filter = useAppSelector(selectFilters);
+  // const tasks = useAppSelector(selectTasks);
+  // const filter = useAppSelector(selectFilters);
 
   const dispatch = useAppDispatch()
+
+  const {
+    data,
+    isLoading,
+    error
+  } = useGetTasksQuery(undefined, {
+    pollingInterval: 30000,
+    refetchOnFocus:true,
+    refetchOnMountOrArgChange:true,
+    refetchOnReconnect:true
+  })
+
+  if (isLoading) {
+    return <h2>Loading....</h2>
+  }
   return (
     <div className="mx-auto max-w-7xl px-5 mt-20">
       <div className="flex justify-between">
@@ -27,7 +43,7 @@ const Task = () => {
       </div>
 
       <div className="space-y-5 mt-5">
-        {tasks?.map((task: TTask) => (
+        {!isLoading && data?.tasks && data?.tasks?.map((task: TTask) => (
           <TaskCard task={task} key={task.id} />
         ))}
       </div>

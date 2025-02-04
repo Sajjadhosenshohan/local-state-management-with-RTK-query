@@ -32,6 +32,7 @@ import { addTask } from "@/Redux/features/task/taskSlice";
 import { TTask, TUser } from "@/types";
 import { selectUsers } from "@/Redux/features/user/user";
 import { useState } from "react";
+import { useCreateTaskMutation } from "@/Redux/api/baseApi";
 // import { TTask } from "@/types";
 
 export function AddTask() {
@@ -39,11 +40,13 @@ export function AddTask() {
   const form = useForm();
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectUsers);
+  const [createTask, { data, isLoading, isError }] = useCreateTaskMutation();
+  console.log(data,44)
 
-  const onSubmit:SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    dispatch(addTask(data as TTask))
-
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    dispatch(addTask(data as TTask));
+    const res = await createTask(data);
+console.log(48,res)
     setOpen(false);
     form.reset();
   };
@@ -149,11 +152,13 @@ export function AddTask() {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Assign-to</SelectLabel>
-                          {
-                            users?.map((user:TUser)=>{
-                              return <SelectItem value={user.id}>{user.name}</SelectItem>
-                            })
-                          }
+                          {users?.map((user: TUser) => {
+                            return (
+                              <SelectItem value={user.id}>
+                                {user.name}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
