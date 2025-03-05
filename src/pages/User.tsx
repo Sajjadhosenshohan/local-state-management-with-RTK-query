@@ -3,8 +3,8 @@ import { selectUsers } from "@/Redux/features/user/user"
 import { useAppSelector } from "@/Redux/hooks"
 import { TUser } from "@/types"
 
-const User = () => {
 
+const User = () => {
   const users = useAppSelector(selectUsers)
   return (
     <div className="mx-auto max-w-7xl px-5 mt-20">
